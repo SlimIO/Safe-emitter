@@ -1,0 +1,31 @@
+{
+  "name": "@slimio/safe-emitter",
+  "version": "1.0.0",
+  "description": "Safe and isolated Event Emitter with Asynchronous capabilities",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SlimIO/safeEmitter.git"
+  },
+  "keywords": [],
+  "author": "SlimIO",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SlimIO/safeEmitter/issues"
+  },
+  "homepage": "https://github.com/SlimIO/safeEmitter#readme",
+  "devDependencies": {
+    "@escommunity/minami": "^1.0.0",
+    "@slimio/eslint-config": "^1.1.8",
+    "@types/node": "^10.11.3",
+    "ava": "^0.25.0",
+    "eslint": "^5.6.1",
+    "nyc": "^13.0.1"
+  },
+  "dependencies": {
+    "@slimio/is": "^1.1.0"
+  }
+}
