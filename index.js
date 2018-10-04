@@ -1,6 +1,33 @@
 // Require Third-party Dependencies
 const is = require("@slimio/is");
 
+// Private Properties
+const events = new WeakMap();
+const maxEventListeners = Symbol("maxEventListeners");
+const errorHandler = Symbol("ErrorHandler");
+
+/**
+ * @function addListener
+ * @param {!SafeEmitter} emitter Emitter instance
+ * @param {!String} eventName eventName
+ * @param {any} listener event listener (handler)
+ * @param {!Boolean} start push at the start or the end
+ * @returns {void}
+ */
+function addListener(emitter, eventName, listener, start = false) {
+    const evt = events.get(emitter);
+    if (evt.has(eventName)) {
+        const listenerArr = evt.get(eventName);
+        if (listenerArr.length + 1 > emitter.maxListeners) {
+            throw new Error(`Maximum number of listener (${emitter.maxListeners}) has been reach.`);
+        }
+        listenerArr[start ? "unshift" : "push"](listener);
+    }
+    else {
+        evt.set(eventName, [listener]);
+    }
+}
+
 /**
  * @class SafeEmitter
  */
@@ -8,14 +35,13 @@ class SafeEmitter {
 
     /**
      * @constructor
-     * @param {Object=} [options={}] Emitter options
-     * @param {Boolean=} options.async Enable Asynchronous mode
      */
-    constructor(options = Object.create(null)) {
-        /** @type {Map<String, Array<() => any>>} */
-        this._events = new Map();
-        this._maxEventListeners = SafeEmitter.DEFAULT_MAX;
-        this._async = is.bool(options.async) ? options.async : false;
+    constructor() {
+        events.set(this, new Map());
+        this[maxEventListeners] = SafeEmitter.defaultMaxListeners;
+        this[errorHandler] = function errorHandler(err) {
+            console.error(err);
+        };
     }
 
     /**
@@ -25,7 +51,7 @@ class SafeEmitter {
      * @return {String[]}
      */
     eventNames() {
-        return [...this._events.keys()];
+        return [...events.get(this).keys()];
     }
 
     /**
@@ -36,11 +62,29 @@ class SafeEmitter {
      * @return {Number}
      */
     listenerCount(eventName) {
-        if (!this._events.has(eventName)) {
+        const evt = events.get(this);
+        if (!evt.has(eventName)) {
             return 0;
         }
 
-        return this._events.get(eventName).length;
+        return evt.get(eventName).length;
+    }
+
+    /**
+     * @public
+     * @method listeners
+     * @memberof SafeEmitter#
+     * @desc Returns a copy of the array of listeners for the event named eventName.
+     * @param {!String} eventName event name
+     * @return {Array<any>}
+     */
+    listeners(eventName) {
+        const evt = events.get(this);
+        if (!evt.has(eventName)) {
+            return null;
+        }
+
+        return evt.get(eventName).slice();
     }
 
     /**
@@ -50,18 +94,19 @@ class SafeEmitter {
      * @desc Maximum number of listeners that can be added to one event!
      */
     get maxListeners() {
-        return this._maxEventListeners;
+        return this[maxEventListeners];
     }
 
     /**
      * @param {!Number} max newest maximum count
+     * @throws {TypeError}
      */
     set maxListeners(max) {
         if (typeof max !== "number") {
-            throw new TypeError("max should be typeof number!");
+            throw new TypeError("max argument should be typeof number!");
         }
 
-        this._maxEventListeners = max < 0 ? SafeEmitter.DEFAULT_MAX : max;
+        this[maxEventListeners] = max < 0 ? SafeEmitter.defaultMaxListeners : max;
     }
 
     /**
@@ -83,28 +128,64 @@ class SafeEmitter {
             throw new TypeError("listener should be typeof Function");
         }
 
-        if (this._events.has(eventName)) {
-            const listenerArr = this._events.get(eventName);
-            if (listenerArr.length + 1 > this._maxEventListeners) {
-                throw new Error(`Maximum number of listener (${this._maxEventListeners}) has been reach.`);
-            }
-            listenerArr.push(listener);
-        }
-        else {
-            this._events.set(eventName, [listener]);
-        }
+        addListener(this, eventName, listener, false);
     }
 
+    /**
+     * @public
+     * @method prependListener
+     * @memberof SafeEmitter#
+     * @param {!String} eventName event name
+     * @param {any} listener event handler!
+     * @return {void}
+     *
+     * @throws {TypeError}
+     * @throws {Error}
+     */
     prependListener(eventName, listener) {
+        if (typeof eventName !== "string") {
+            throw new TypeError("eventName should be typeof string");
+        }
+        if (!is.func(listener)) {
+            throw new TypeError("listener should be typeof Function");
+        }
 
+        addListener(this, eventName, listener, true);
     }
 
-    once(eventName, listener)  {
+    /**
+     * @public
+     * @method once
+     * @memberof SafeEmitter#
+     * @param {!String} eventName event name
+     * @param {!Number} timeOut event Timeout
+     * @return {void}
+     *
+     * @throws {TypeError}
+     */
+    once(eventName, timeOut) {
+        if (typeof eventName !== "string") {
+            throw new TypeError("eventName should be typeof string");
+        }
 
-    }
-
-    prependOnceListener(eventName, listener) {
-
+        return new Promise((resolve, reject) => {
+            /** @type {NodeJS.Timer} */
+            let timeOutTimer;
+            const listener = () => {
+                if (typeof timeOutTimer !== "undefined") {
+                    clearTimeout(timeOutTimer);
+                }
+                this.off(eventName, listener);
+                resolve();
+            };
+            if (typeof timeOut === "number") {
+                timeOutTimer = setTimeout(() => {
+                    this.off(eventName, listener);
+                    reject(new Error(`once timeOut for eventName ${eventName}`));
+                }, timeOut);
+            }
+            this.on(eventName, listener);
+        });
     }
 
     /**
@@ -125,8 +206,9 @@ class SafeEmitter {
             throw new TypeError("handler should be typeof Function");
         }
 
-        if (this._events.has(eventName)) {
-            const listenerArr = this._events.get(eventName);
+        const evt = events.get(this);
+        if (evt.has(eventName)) {
+            const listenerArr = evt.get(eventName);
             const handlerIndex = listenerArr.indexOf(listener);
             if (handlerIndex !== -1) {
                 listenerArr.splice(handlerIndex, 1);
@@ -148,7 +230,7 @@ class SafeEmitter {
             throw new TypeError("eventName should be typeof string");
         }
 
-        this._events.delete(eventName);
+        events.get(this).delete(eventName);
     }
 
     /**
@@ -160,16 +242,48 @@ class SafeEmitter {
      * @return {void}
      */
     emit(eventName, ...data) {
-        if (this._events.has(eventName)) {
+        const evt = events.get(this);
+        if (evt.has(eventName)) {
             return;
         }
 
+        const listenersArr = evt.get(eventName);
+        for (const listener of listenersArr) {
+            if (is.asyncFunction(listener)) {
+                listener(...data).catch(this[errorHandler]);
+                continue;
+            }
+            try {
+                listener(...data);
+            }
+            catch (error) {
+                this[errorHandler](error);
+            }
+        }
+    }
 
+    /**
+     * @public
+     * @method emitAsync
+     * @memberof SafeEmitter#
+     * @param {!String} eventName event name
+     * @param {any} data Handler data...
+     * @return {void}
+     */
+    emitAsync(eventName, ...data) {
+        const evt = events.get(this);
+        if (evt.has(eventName)) {
+            return;
+        }
+
+        const listenersArr = evt.get(eventName);
+        Promise.all(listenersArr).catch(this[errorHandler]);
     }
 
 }
 
-SafeEmitter.DEFAULT_MAX = 10;
+// Static defaultMaxListeners
+SafeEmitter.defaultMaxListeners = 10;
 
 // Add method alias
 SafeEmitter.prototype.addEventListener = SafeEmitter.prototype.on;
