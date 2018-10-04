@@ -21,7 +21,7 @@ declare class SafeEmitter {
     prependOnceListener(): void;
     removeAllListeners(eventName?: SafeEmitter.EventName): void;
     emit(eventName: SafeEmitter.EventName, ...data: any[]): void;
-    emitAsync(eventName: SafeEmitter.EventName, ...data: any[]): void;
+    emitAndWait(eventName: SafeEmitter.EventName, ...data: any[]): void;
 }
 
 /**

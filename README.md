@@ -66,7 +66,7 @@ declare class SafeEmitter {
     prependOnceListener(): void;
     removeAllListeners(eventName?: SafeEmitter.EventName): void;
     emit(eventName: SafeEmitter.EventName, ...data: any[]): void;
-    emitAsync(eventName: SafeEmitter.EventName, ...data: any[]): Promise<void>;
+    emitAndWait(eventName: SafeEmitter.EventName, ...data: any[]): Promise<void>;
 }
 
 declare namespace SafeEmitter {
@@ -81,7 +81,7 @@ WIP
 ### catch(errorListener): void;
 WIP
 
-### emitAsync(eventName: String|Symbol, ...data: any[]): Promise< void >;
+### emitAndWait(eventName: String|Symbol, ...data: any[]): Promise< void >;
 WIP
 
 ## LICENSE
