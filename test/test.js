@@ -2,7 +2,6 @@
 
 // Require Third-Party Dependencies
 const avaTest = require("ava");
-const is = require("@slimio/is");
 
 // Require SafeEmitter
 const SafeEmitter = require("../");
