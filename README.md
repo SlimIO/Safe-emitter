@@ -1,7 +1,11 @@
 # SafeEmitter
-Safe and isolated Event Emitter (designed to be compatible with NodeJS Emitter). This package has been created to answer specific need of the SlimIO product and has no purpose of replacing NodeJS Emitter.
+Safe NodeJS Event Emitter (aim to be compatible with NodeJS Emitter as possible). This package has been created to answer specific need of the SlimIO product and has no purpose of replacing NodeJS Emitter.
 
 Within the SlimIO Core we need to ensure that all addons are started as expected without any errors (any Error in an EventEmitter will cause a stop at the core level).
+
+If you dont know why you need this, please don't use it !
+
+> Note: The SlimIO core force NodeJS DEP0018 (So unhandledPromise will stop the process).
 
 ## Getting Started
 
@@ -18,29 +22,28 @@ $ yarn add @slimio/safe-emitter
 ```js
 const SafeEmitter = require("@slimio/safe-emitter");
 
-const eContainer = new SafeEmitter();
-eContainer.catch((err, eventName) => {
+const evt = new SafeEmitter().catch((err, eventName) => {
     console.log(`Catched error for event <${eventName}> ${err.message}`);
 });
 
-eContainer.on("foo", () => {
+evt.on("foo", () => {
     new Error("ooppsss!");
 });
-eContainer.once("foo").then(() => {
+evt.once("foo").then(() => {
     console.log("triggered one time!");
 });
 
-eContainer.emit("foo");
-eContainer.emitAndWait("foo").then(() => {
+evt.emit("foo");
+evt.emitAndWait("foo").then(() => {
     console.log("all foo events have been emitted!");
 }).catch(console.error);
 ```
 
 ## API
 
-All API are NodeJS compatible except `emitAsync`, `catch`, `once` and `prependOnceListener`.
+All API are compatible with NodeJS EventEmitter except `emitAsync`, `catch`, `once` and `prependOnceListener`.
 
-The method **prependOnceListener** was not implemented (it will throw a not Implemented error if you call it).
+The method **prependOnceListener** is not implemented (it will throw a not Implemented error if you try to call it).
 
 ```ts
 declare class SafeEmitter {
@@ -77,7 +80,7 @@ declare namespace SafeEmitter {
 ```
 
 ### once(eventName: String|Symbol, timeOut?: number): Promise< void >;
-The method `once` has been refactored to return a Promise when the event is catched. Optionally you can set a timeOut in milliseconds. The back listener will be cleanup automatically !
+The method `once` has been refactored to return a Promise when the event is catched. Optionally you can set a timeOut in milliseconds. The back listener will be cleaned-up automatically !
 
 ```js
 async function main() {
@@ -90,6 +93,8 @@ async function main() {
 }
 main().catch(console.error);
 ```
+
+> It's a design choice made for SlimIO core and addons containers.
 
 ### catch(errorListener: SafeEmitter.ErrorListener): this;
 Add an error listener to the EventEmitter. The listener is able to catch all kind of errors (even for Asynchronous Function).
