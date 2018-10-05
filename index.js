@@ -8,6 +8,7 @@ const errorHandler = Symbol("ErrorHandler");
 
 /**
  * @function isEventName
+ * @desc Known if a given eventName is a string or symbol primitive!
  * @param {String | Symbol} eventName eventName
  * @returns {Boolean}
  */
@@ -29,7 +30,7 @@ function addListener(emitter, eventName, listener, start = false) {
     if (evt.has(eventName)) {
         const listenerArr = evt.get(eventName);
         if (listenerArr.length + 1 > emitter.getMaxListeners()) {
-            throw new Error(`Maximum number of listener (${emitter.getMaxListeners()}) has been reach.`);
+            throw new Error(`The maximum number of listeners (${emitter.getMaxListeners()}) has been reach.`);
         }
         emitter.emit("newListener", eventName, listener);
         listenerArr[start ? "unshift" : "push"](listener);
@@ -65,6 +66,7 @@ class SafeEmitter {
         if (!is.func(errorListener)) {
             throw new TypeError("errorListener should be typeof Function");
         }
+
         this[errorHandler] = errorListener;
     }
 
@@ -207,6 +209,7 @@ class SafeEmitter {
                 this.off(eventName, listener);
                 resolve();
             };
+
             if (typeof timeOut === "number") {
                 timeOutTimer = setTimeout(() => {
                     this.off(eventName, listener);
@@ -250,13 +253,15 @@ class SafeEmitter {
         }
 
         const evt = events.get(this);
-        if (evt.has(eventName)) {
-            const listenerArr = evt.get(eventName);
-            const handlerIndex = listenerArr.indexOf(listener);
-            if (handlerIndex !== -1) {
-                this.emit("removeListener", eventName, listener);
-                listenerArr.splice(handlerIndex, 1);
-            }
+        if (!evt.has(eventName)) {
+            return;
+        }
+
+        const listenerArr = evt.get(eventName);
+        const handlerIndex = listenerArr.indexOf(listener);
+        if (handlerIndex !== -1) {
+            this.emit("removeListener", eventName, listener);
+            listenerArr.splice(handlerIndex, 1);
         }
     }
 
@@ -333,15 +338,14 @@ class SafeEmitter {
             return;
         }
 
-        // Send event at the next event-loop iteration!
+        // Iterate over all listeners of eventName
         for (const listener of evt.get(eventName)) {
             try {
                 if (is.asyncFunction(listener)) {
                     await listener(...data);
+                    continue;
                 }
-                else {
-                    listener(...data);
-                }
+                listener(...data);
             }
             catch (error) {
                 this[errorHandler](error, eventName, listener);
