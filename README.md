@@ -52,14 +52,14 @@ declare class SafeEmitter {
     // Methods
     getMaxListeners(): number;
     setMaxListeners(max: number): void;
-    catch(errorListener: SafeEmitter.Listener): void;
+    catch(errorListener: SafeEmitter.ErrorListener): this;
     eventNames(): SafeEmitter.EventName[];
     listenerCount(eventName: SafeEmitter.EventName): number;
     listeners(eventName: SafeEmitter.EventName): SafeEmitter.Listener[];
     rawListeners(eventName: SafeEmitter.EventName): SafeEmitter.Listener[];
     on(eventName: SafeEmitter.EventName, listener: SafeEmitter.Listener): void;
     off(eventName: SafeEmitter.EventName, listener: SafeEmitter.Listener): void;
-    once(eventName: SafeEmitter.EventName): Promise<void>;
+    once(eventName: SafeEmitter.EventName, timeOut?: number): Promise<void>;
     addEventListener(eventName: SafeEmitter.EventName, listener: SafeEmitter.Listener): void;
     removeEventListener(eventName: SafeEmitter.EventName, listener: SafeEmitter.Listener): void;
     prependListener(eventName: SafeEmitter.EventName, listener: SafeEmitter.Listener): void;
@@ -70,19 +70,65 @@ declare class SafeEmitter {
 }
 
 declare namespace SafeEmitter {
+    export type ErrorListener = (error: Error, eventName: EventName, listener: Listener) => void;
     export type EventName = String | Symbol;
     export type Listener = (...any: any[]) => any;
 }
 ```
 
-### once(eventName: String|Symbol): Promise< void >;
-WIP
+### once(eventName: String|Symbol, timeOut?: number): Promise< void >;
+The method `once` has been refactored to return a Promise when the event is catched. Optionally you can set a timeOut in milliseconds. The back listener will be cleanup automatically !
 
-### catch(errorListener): void;
-WIP
+```js
+async function main() {
+    const evt = new SafeEmitter();
+    setTimeout(() => {
+        evt.emit("foo");
+    }, 500);
+    await evt.once("foo");
+    console.log("foo has been triggered!");
+}
+main().catch(console.error);
+```
+
+### catch(errorListener: SafeEmitter.ErrorListener): this;
+Add an error listener to the EventEmitter. The listener is able to catch all kind of errors (even for Asynchronous Function).
+
+The error listener is has described by the TypeScript definition:
+```ts
+type ErrorListener = (error: Error, eventName: EventName, listener: Listener) => void;
+```
+
+Example:
+
+```js
+const evt = new SafeEmitter().catch((err) => {
+    console.log(err.message);
+});
+evt.on("foo", () => {
+    throw new Error("ooppss sync!");
+});
+evt.on("bar", async() => {
+    throw new Error("ooppss async!");
+});
+
+evt.emit("foo");
+evt.emit("bar");
+```
 
 ### emitAndWait(eventName: String|Symbol, ...data: any[]): Promise< void >;
-WIP
+Emit an event and wait for all listeners to be completed (It's work for AsyncFunction too). Be sure to use this method wisely !
+
+```js
+async function main() {
+    const evt = new SafeEmitter();
+    // ... add many listeners (synchronous or event asynchronous).
+
+    await evt.emitAndWait("foo");
+    console.log("all foo listeners have been triggered and completed!");
+}
+main().catch(console.error);
+```
 
 ## LICENSE
 MIT

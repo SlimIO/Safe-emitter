@@ -60,7 +60,7 @@ class SafeEmitter {
      * @method catch
      * @memberof SafeEmitter#
      * @param {!Function} errorListener EventEmitter errorListener
-     * @return {void}
+     * @return {this}
      */
     catch(errorListener) {
         if (!is.func(errorListener)) {
@@ -68,6 +68,8 @@ class SafeEmitter {
         }
 
         this[errorHandler] = errorListener;
+
+        return this;
     }
 
     /**
