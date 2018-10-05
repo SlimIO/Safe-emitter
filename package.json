@@ -4,7 +4,10 @@
   "description": "Safe and isolated Event Emitter with Asynchronous capabilities",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "ava --verbose",
+    "doc": "jsdoc -c ./jsdoc.json -r",
+    "coverage": "nyc npm test",
+    "report": "nyc report --reporter=html"
   },
   "repository": {
     "type": "git",
@@ -20,9 +23,11 @@
   "devDependencies": {
     "@escommunity/minami": "^1.0.0",
     "@slimio/eslint-config": "^1.1.8",
+    "@slimio/is": "^1.1.0",
     "@types/node": "^10.11.3",
     "ava": "^0.25.0",
     "eslint": "^5.6.1",
+    "jsdoc": "^3.5.5",
     "nyc": "^13.0.1"
   },
   "dependencies": {}

@@ -35,7 +35,7 @@ function isEventName(eventName) {
  *
  * @throws {Error}
  */
-function addListener(emitter, eventName, listener, start = false) {
+function addListener(emitter, eventName, listener, start) {
     const evt = events.get(emitter);
     if (evt.has(eventName)) {
         const listenerArr = evt.get(eventName);
@@ -61,6 +61,7 @@ class SafeEmitter {
     constructor() {
         events.set(this, new Map());
         this[maxEventListeners] = SafeEmitter.defaultMaxListeners;
+        /* istanbul ignore next */
         // eslint-disable-next-line
         this[errorHandler] = function errorHandler() {};
     }
@@ -252,7 +253,7 @@ class SafeEmitter {
      * @memberof SafeEmitter#
      * @param {!String} eventName event name
      * @param {any} listener event handler!
-     * @return {void}
+     * @return {Boolean}
      *
      * @throws {TypeError}
      */
@@ -261,20 +262,24 @@ class SafeEmitter {
             throw new TypeError("eventName should be typeof string or symbol");
         }
         if (typeof listener !== "function") {
-            throw new TypeError("handler should be typeof Function");
+            throw new TypeError("listener should be typeof Function");
         }
 
         const evt = events.get(this);
         if (!evt.has(eventName)) {
-            return;
+            return false;
         }
 
         const listenerArr = evt.get(eventName);
         const handlerIndex = listenerArr.indexOf(listener);
-        if (handlerIndex !== -1) {
-            this.emit("removeListener", eventName, listener);
-            listenerArr.splice(handlerIndex, 1);
+        if (handlerIndex === -1) {
+            return false;
         }
+
+        this.emit("removeListener", eventName, listener);
+        listenerArr.splice(handlerIndex, 1);
+
+        return true;
     }
 
     /**

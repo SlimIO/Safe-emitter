@@ -13,7 +13,7 @@ declare class SafeEmitter {
     listeners(eventName: SafeEmitter.EventName): SafeEmitter.Listener[];
     rawListeners(eventName: SafeEmitter.EventName): SafeEmitter.Listener[];
     on(eventName: SafeEmitter.EventName, listener: SafeEmitter.Listener): void;
-    off(eventName: SafeEmitter.EventName, listener: SafeEmitter.Listener): void;
+    off(eventName: SafeEmitter.EventName, listener: SafeEmitter.Listener): boolean;
     once(eventName: SafeEmitter.EventName, timeOut?: number): Promise<void>;
     addEventListener(eventName: SafeEmitter.EventName, listener: SafeEmitter.Listener): void;
     removeEventListener(eventName: SafeEmitter.EventName, listener: SafeEmitter.Listener): void;
