@@ -25,7 +25,5 @@
     "eslint": "^5.6.1",
     "nyc": "^13.0.1"
   },
-  "dependencies": {
-    "@slimio/is": "^1.1.0"
-  }
+  "dependencies": {}
 }

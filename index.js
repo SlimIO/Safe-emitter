@@ -1,10 +1,16 @@
-// Require Third-party Dependencies
-const is = require("@slimio/is");
-
 // Private Properties
 const events = new WeakMap();
 const maxEventListeners = Symbol("maxEventListeners");
 const errorHandler = Symbol("ErrorHandler");
+
+/**
+ * @function isAsyncFunction
+ * @param {any} value JavaScript Object value
+ * @returns {Boolean}
+ */
+function isAsyncFunction(value) {
+    return Object.prototype.toString.call(value).slice(8, -1) === "AsyncFunction";
+}
 
 /**
  * @function isEventName
@@ -13,7 +19,9 @@ const errorHandler = Symbol("ErrorHandler");
  * @returns {Boolean}
  */
 function isEventName(eventName) {
-    return is.string(eventName) || is.symbol(eventName);
+    const evtType = typeof eventName;
+
+    return evtType === "string" || evtType === "symbol";
 }
 
 /**
@@ -24,6 +32,8 @@ function isEventName(eventName) {
  * @param {any} listener event listener (handler)
  * @param {!Boolean} start push at the start or the end
  * @returns {void}
+ *
+ * @throws {Error}
  */
 function addListener(emitter, eventName, listener, start = false) {
     const evt = events.get(emitter);
@@ -63,7 +73,7 @@ class SafeEmitter {
      * @return {this}
      */
     catch(errorListener) {
-        if (!is.func(errorListener)) {
+        if (typeof errorListener !== "function") {
             throw new TypeError("errorListener should be typeof Function");
         }
 
@@ -132,6 +142,8 @@ class SafeEmitter {
      * @param {!Number} max new maximum of listeners for the given event
      * @desc Maximum number of listeners that can be added to one event!
      * @return {void}
+     *
+     * @throws {TypeError}
      */
     setMaxListeners(max) {
         if (typeof max !== "number") {
@@ -150,13 +162,12 @@ class SafeEmitter {
      * @return {void}
      *
      * @throws {TypeError}
-     * @throws {Error}
      */
     on(eventName, listener) {
         if (!isEventName(eventName)) {
             throw new TypeError("eventName should be typeof string or symbol");
         }
-        if (!is.func(listener)) {
+        if (typeof listener !== "function") {
             throw new TypeError("listener should be typeof Function");
         }
 
@@ -172,13 +183,12 @@ class SafeEmitter {
      * @return {void}
      *
      * @throws {TypeError}
-     * @throws {Error}
      */
     prependListener(eventName, listener) {
         if (!isEventName(eventName)) {
             throw new TypeError("eventName should be typeof string or symbol");
         }
-        if (!is.func(listener)) {
+        if (typeof listener !== "function") {
             throw new TypeError("listener should be typeof Function");
         }
 
@@ -250,7 +260,7 @@ class SafeEmitter {
         if (!isEventName(eventName)) {
             throw new TypeError("eventName should be typeof string or symbol");
         }
-        if (!is.func(listener)) {
+        if (typeof listener !== "function") {
             throw new TypeError("handler should be typeof Function");
         }
 
@@ -278,7 +288,7 @@ class SafeEmitter {
      * @throws {TypeError}
      */
     removeAllListeners(eventName) {
-        if (is.nullOrUndefined(eventName)) {
+        if (typeof eventName === "undefined" || eventName === null) {
             events.set(this, new Map());
 
             return;
@@ -308,7 +318,7 @@ class SafeEmitter {
         // Send event at the next event-loop iteration!
         setImmediate(() => {
             for (const listener of evt.get(eventName)) {
-                if (is.asyncFunction(listener)) {
+                if (isAsyncFunction(listener)) {
                     listener(...data).catch((error) => {
                         this[errorHandler](error, eventName, listener);
                     });
@@ -343,7 +353,7 @@ class SafeEmitter {
         // Iterate over all listeners of eventName
         for (const listener of evt.get(eventName)) {
             try {
-                if (is.asyncFunction(listener)) {
+                if (isAsyncFunction(listener)) {
                     await listener(...data);
                     continue;
                 }
