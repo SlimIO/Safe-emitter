@@ -220,7 +220,8 @@ class SafeEmitter {
                     clearTimeout(timeOutTimer);
                 }
                 this.off(eventName, listener);
-                resolve();
+                // eslint-disable-next-line
+                resolve(arguments);
             };
 
             if (typeof timeOut === "number") {
