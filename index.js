@@ -215,13 +215,12 @@ class SafeEmitter {
         return new Promise((resolve, reject) => {
             /** @type {NodeJS.Timer} */
             let timeOutTimer;
-            const listener = () => {
+            const listener = (...args) => {
                 if (typeof timeOutTimer !== "undefined") {
                     clearTimeout(timeOutTimer);
                 }
                 this.off(eventName, listener);
-                // eslint-disable-next-line
-                resolve(arguments);
+                resolve(args);
             };
 
             if (typeof timeOut === "number") {
