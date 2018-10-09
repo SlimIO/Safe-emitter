@@ -284,3 +284,12 @@ avaTest("reach maximum number of listener", function assert(assert) {
     }, Error);
     assert.is(message, "The maximum number of listeners (1) has been reach.");
 });
+
+avaTest("once method with arguments!", async function assert(assert) {
+    const evt = new SafeEmitter();
+    setImmediate(() => {
+        evt.emit("foo", 10, 5);
+    });
+    const args = await evt.once("foo");
+    assert.deepEqual(args, [10, 5]);
+});
