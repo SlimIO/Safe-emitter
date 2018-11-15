@@ -42,12 +42,13 @@ function addListener(emitter, eventName, listener, start) {
         if (listenerArr.length + 1 > emitter.getMaxListeners()) {
             throw new Error(`The maximum number of listeners (${emitter.getMaxListeners()}) has been reach.`);
         }
-        emitter.emit("newListener", eventName, listener);
         listenerArr[start ? "unshift" : "push"](listener);
     }
     else {
         events.get(emitter).set(eventName, [listener]);
     }
+
+    emitter.emit("newListener", eventName, listener);
 }
 
 /**
@@ -215,10 +216,12 @@ class SafeEmitter {
         return new Promise((resolve, reject) => {
             /** @type {NodeJS.Timer} */
             let timeOutTimer;
+
             const listener = (...args) => {
                 if (typeof timeOutTimer !== "undefined") {
                     clearTimeout(timeOutTimer);
                 }
+
                 this.off(eventName, listener);
                 resolve(args);
             };
@@ -321,14 +324,17 @@ class SafeEmitter {
         }
 
         // Send event at the next event-loop iteration!
+        const listeners = evt.get(eventName).slice(0);
+
         setImmediate(() => {
-            for (const listener of evt.get(eventName)) {
+            for (const listener of listeners) {
                 if (isAsyncFunction(listener)) {
                     listener(...data).catch((error) => {
                         this[errorHandler](error, eventName, listener);
                     });
                     continue;
                 }
+
                 try {
                     listener(...data);
                 }
