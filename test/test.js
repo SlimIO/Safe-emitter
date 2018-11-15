@@ -293,3 +293,30 @@ avaTest("once method with arguments!", async function assert(assert) {
     const args = await evt.once("foo");
     assert.deepEqual(args, [10, 5]);
 });
+
+avaTest("catch once() multiple time", async function assert(assert) {
+    assert.plan(4);
+    const evt = new SafeEmitter();
+
+    evt.on("newListener", (eventName) => {
+        if (eventName === "foo") {
+            assert.pass();
+        }
+    });
+    evt.on("removeListener", (eventName) => {
+        if (eventName === "foo") {
+            assert.pass();
+        }
+    });
+
+    setImmediate(() => {
+        evt.emit("foo");
+    });
+
+    await Promise.all([
+        evt.once("foo", 100),
+        evt.once("foo", 100)
+    ]);
+
+    await new Promise((resolve) => setImmediate(resolve));
+});
