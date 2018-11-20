@@ -361,8 +361,10 @@ class SafeEmitter {
             return;
         }
 
+        const listeners = evt.get(eventName).slice(0);
+
         // Iterate over all listeners of eventName
-        for (const listener of evt.get(eventName)) {
+        for (const listener of listeners) {
             try {
                 if (isAsyncFunction(listener)) {
                     await listener(...data);
