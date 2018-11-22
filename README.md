@@ -1,4 +1,9 @@
 # SafeEmitter
+
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/safeEmitter/Config/commit-activity)
+[![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/SlimIO/safeEmitter/blob/master/LICENSE)
+[![Known Vulnerabilities](https://snyk.io/test/github/SlimIO/safeEmitter/badge.svg?targetFile=package.json)](https://snyk.io/test/github/SlimIO/safeEmitter?targetFile=package.json)
+
 Safe NodeJS Event Emitter (aim to be compatible with NodeJS Emitter as possible). This package has been created to answer specific need of the SlimIO product and has no purpose of replacing NodeJS Emitter.
 
 Within the SlimIO Core we need to ensure that all addons are started as expected without any errors (any Error in an EventEmitter will cause a stop at the core level).
