@@ -1,4 +1,4 @@
-declare class SafeEmitter {
+declare class SafeEmitter<T> {
     constructor();
 
     // Static Properties
@@ -7,32 +7,28 @@ declare class SafeEmitter {
     // Methods
     getMaxListeners(): number;
     setMaxListeners(max: number): void;
-    catch(errorListener: SafeEmitter.ErrorListener): this;
-    eventNames(): SafeEmitter.EventName[];
-    listenerCount(eventName: SafeEmitter.EventName): number;
-    listeners(eventName: SafeEmitter.EventName): SafeEmitter.Listener[];
-    rawListeners(eventName: SafeEmitter.EventName): SafeEmitter.Listener[];
-    on(eventName: SafeEmitter.EventName, listener: SafeEmitter.Listener): void;
-    off(eventName: SafeEmitter.EventName, listener: SafeEmitter.Listener): boolean;
-    once(eventName: SafeEmitter.EventName, timeOut?: number): Promise<void>;
-    addEventListener(eventName: SafeEmitter.EventName, listener: SafeEmitter.Listener): void;
-    removeEventListener(eventName: SafeEmitter.EventName, listener: SafeEmitter.Listener): void;
-    prependListener(eventName: SafeEmitter.EventName, listener: SafeEmitter.Listener): void;
+    catch(errorListener: SafeEmitter.ErrorListener<T>): this;
+    eventNames(): keyof T[];
+    listenerCount<K extends keyof T>(eventName: K): number;
+    listeners<K extends keyof T>(eventName: K): SafeEmitter.Listener<T[K]>[];
+    rawListeners<K extends keyof T>(eventName: K): SafeEmitter.Listener<T[K]>[];
+    on<K extends keyof T>(eventName: K, listener: SafeEmitter.Listener<T[K]>): void;
+    off<K extends keyof T>(eventName: K, listener: SafeEmitter.Listener<T[K]>): boolean;
+    once<K extends keyof T>(eventName: K, timeOut?: number): Promise<[T[K]]>;
+    addEventListener<K extends keyof T>(eventName: K, listener: SafeEmitter.Listener<T[K]>): void;
+    removeEventListener<K extends keyof T>(eventName: K, listener: SafeEmitter.Listener<T[K]>): void;
+    prependListener<K extends keyof T>(eventName: K, listener: SafeEmitter.Listener<T[K]>): void;
     prependOnceListener(): void;
-    removeAllListeners(eventName?: SafeEmitter.EventName): void;
-    emit(eventName: SafeEmitter.EventName, ...data: any[]): void;
-    emitAndWait(eventName: SafeEmitter.EventName, ...data: any[]): void;
+    removeAllListeners<K extends keyof T>(eventName?: K): void;
+    emit<K extends keyof T>(eventName: K, data: T[K]): void;
+    emitAndWait<K extends keyof T>(eventName: K, data: T[K]): void;
 }
 
-/**
- * Emitter namespace
- */
 declare namespace SafeEmitter {
+    export type EventType = string | symbol;
 
-    export type ErrorListener = (error: Error, eventName: EventName, listener: Listener) => void;
-    export type EventName = String | Symbol;
-    export type Listener = () => any;
-
+    export type ErrorListener<T> = (error: Error, eventName: keyof T, listener: Listener<T[keyof T]>) => void;
+    export type Listener<R> = (argument: R) => void;
 }
 
 export as namespace SafeEmitter;
