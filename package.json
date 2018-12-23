@@ -1,6 +1,6 @@
 {
   "name": "@slimio/safe-emitter",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Safe and isolated Event Emitter with Asynchronous capabilities",
   "main": "index.js",
   "scripts": {
