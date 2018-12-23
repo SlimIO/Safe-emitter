@@ -62,15 +62,19 @@ avaTest("Play with getMaxListeners() & setMaxListeners(max)", function assert(as
 avaTest("setMaxListeners(max) should throw a typeError if max is not a number", function assert(assert) {
     const evt = new SafeEmitter();
 
-    const { message } = assert.throws(() => evt.setMaxListeners("10"), TypeError);
-    assert.is(message, "max argument should be typeof number!");
+    assert.throws(() => evt.setMaxListeners("10"), {
+        instanceOf: TypeError,
+        message: "max argument should be typeof number!"
+    });
 });
 
 avaTest("catch(errorListener) should throw a typeError if errorListener is not a function", function assert(assert) {
     const evt = new SafeEmitter();
 
-    const { message } = assert.throws(() => evt.catch("10"), TypeError);
-    assert.is(message, "errorListener should be typeof Function");
+    assert.throws(() => evt.catch("10"), {
+        instanceOf: TypeError,
+        message: "errorListener should be typeof Function"
+    });
 });
 
 avaTest("catch error", async function assert(assert) {
@@ -95,29 +99,37 @@ avaTest("catch error", async function assert(assert) {
 avaTest("on() eventName should be typeof string or symbol", function assert(assert) {
     const evt = new SafeEmitter();
 
-    const { message } = assert.throws(() => evt.on(10), TypeError);
-    assert.is(message, "eventName should be typeof string or symbol");
+    assert.throws(() => evt.on(10), {
+        instanceOf: TypeError,
+        message: "eventName should be typeof string or symbol"
+    });
 });
 
 avaTest("on() listener should be typeof function", function assert(assert) {
     const evt = new SafeEmitter();
 
-    const { message } = assert.throws(() => evt.on("foo", 10), TypeError);
-    assert.is(message, "listener should be typeof Function");
+    assert.throws(() => evt.on("foo", 10), {
+        instanceOf: TypeError,
+        message: "listener should be typeof Function"
+    });
 });
 
 avaTest("prependListener() eventName should be typeof string or symbol", function assert(assert) {
     const evt = new SafeEmitter();
 
-    const { message } = assert.throws(() => evt.prependListener(10), TypeError);
-    assert.is(message, "eventName should be typeof string or symbol");
+    assert.throws(() => evt.prependListener(10), {
+        instanceOf: TypeError,
+        message: "eventName should be typeof string or symbol"
+    });
 });
 
 avaTest("prependListener() listener should be typeof function", function assert(assert) {
     const evt = new SafeEmitter();
 
-    const { message } = assert.throws(() => evt.prependListener("foo", 10), TypeError);
-    assert.is(message, "listener should be typeof Function");
+    assert.throws(() => evt.prependListener("foo", 10), {
+        instanceOf: TypeError,
+        message: "listener should be typeof Function"
+    });
 });
 
 avaTest("prependListener (add event listener at the top)", function assert(assert) {
@@ -135,8 +147,10 @@ avaTest("prependListener (add event listener at the top)", function assert(asser
 avaTest("once() eventName should be typeof string or symbol", function assert(assert) {
     const evt = new SafeEmitter();
 
-    const { message } = assert.throws(() => evt.once(10), TypeError);
-    assert.is(message, "eventName should be typeof string or symbol");
+    assert.throws(() => evt.once(10), {
+        instanceOf: TypeError,
+        message: "eventName should be typeof string or symbol"
+    });
 });
 
 avaTest("once() Wait for a given event!", async function assert(assert) {
@@ -152,8 +166,10 @@ avaTest("once() Wait for a given event!", async function assert(assert) {
 avaTest("once() Timeout a given event!", async function assert(assert) {
     const evt = new SafeEmitter();
 
-    const { message } = await assert.throws(evt.once("foo", 1), Error);
-    assert.is(message, "once timeOut for eventName foo");
+    await assert.throwsAsync(evt.once("foo", 1), {
+        instanceOf: Error,
+        message: "once timeOut for eventName foo"
+    });
 });
 
 avaTest("once() Handle event before timeOut", async function assert(assert) {
@@ -176,15 +192,19 @@ avaTest("prependOnceListener() should throw not implemented error", function ass
 avaTest("off() eventName should be typeof string or symbol", function assert(assert) {
     const evt = new SafeEmitter();
 
-    const { message } = assert.throws(() => evt.off(10), TypeError);
-    assert.is(message, "eventName should be typeof string or symbol");
+    assert.throws(() => evt.off(10), {
+        instanceOf: TypeError,
+        message: "eventName should be typeof string or symbol"
+    });
 });
 
 avaTest("off() listener should be typeof function", function assert(assert) {
     const evt = new SafeEmitter();
 
-    const { message } = assert.throws(() => evt.off("foo", 10), TypeError);
-    assert.is(message, "listener should be typeof Function");
+    assert.throws(() => evt.off("foo", 10), {
+        instanceOf: TypeError,
+        message: "listener should be typeof Function"
+    });
 });
 
 avaTest("off() remove a listener", function assert(assert) {
@@ -211,8 +231,10 @@ avaTest("removeAllListeners", function assert(assert) {
 avaTest("removeAllListeners(eventName) eventName should be string or symbol", function assert(assert) {
     const evt = new SafeEmitter();
 
-    const { message } = assert.throws(() => evt.removeAllListeners(10), TypeError);
-    assert.is(message, "eventName should be typeof string or symbol");
+    assert.throws(() => evt.removeAllListeners(10), {
+        instanceOf: TypeError,
+        message: "eventName should be typeof string or symbol"
+    });
 });
 
 avaTest("removeAllListeners for a given eventName", function assert(assert) {
@@ -279,10 +301,9 @@ avaTest("reach maximum number of listener", function assert(assert) {
     evt.setMaxListeners(1);
     evt.on("foo", () => {});
 
-    const { message } = assert.throws(() => {
+    assert.throws(() => {
         evt.on("foo", () => {});
-    }, Error);
-    assert.is(message, "The maximum number of listeners (1) has been reach.");
+    }, { instanceOf: Error, message: "The maximum number of listeners (1) has been reach." });
 });
 
 avaTest("once method with arguments!", async function assert(assert) {
