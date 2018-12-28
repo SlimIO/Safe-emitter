@@ -1,6 +1,6 @@
 # SafeEmitter
 
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/safeEmitter/Config/commit-activity)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/SlimIO/safeEmitter/commit-activity)
 [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/SlimIO/safeEmitter/blob/master/LICENSE)
 [![Known Vulnerabilities](https://snyk.io/test/github/SlimIO/safeEmitter/badge.svg?targetFile=package.json)](https://snyk.io/test/github/SlimIO/safeEmitter?targetFile=package.json)
 
