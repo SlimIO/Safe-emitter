@@ -30,7 +30,11 @@
     "type": "git",
     "url": "git+https://github.com/SlimIO/safeEmitter.git"
   },
-  "keywords": [],
+  "keywords": [
+      "emitter",
+      "safe",
+      "event"
+  ],
   "author": "SlimIO",
   "license": "MIT",
   "bugs": {
