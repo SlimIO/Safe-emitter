@@ -4,6 +4,7 @@
 [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/SlimIO/safeEmitter/blob/master/LICENSE)
 [![Known Vulnerabilities](https://snyk.io/test/github/SlimIO/safeEmitter/badge.svg?targetFile=package.json)](https://snyk.io/test/github/SlimIO/safeEmitter?targetFile=package.json)
 ![V1.0.6](https://img.shields.io/badge/version-1.0.6-blue.svg)
+![0DEP](https://img.shields.io/badge/Dependencies-0-yellow.svg)
 
 Safe NodeJS Event Emitter (aim to be compatible with NodeJS Emitter as possible). This package has been created to answer specific need of the SlimIO product and has no purpose of replacing NodeJS Emitter.
 
@@ -12,6 +13,10 @@ Within the SlimIO Core we need to ensure that all addons are started as expected
 If you dont know why you need this, please don't use it !
 
 > Note: The SlimIO core force NodeJS DEP0018 (So unhandledPromise will stop the process).
+
+<p align="center">
+    <img src="https://i.imgur.com/ogpk93x.png">
+</p>
 
 ## Getting Started
 
