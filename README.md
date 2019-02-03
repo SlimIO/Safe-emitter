@@ -6,13 +6,13 @@
 ![V1.0.6](https://img.shields.io/badge/version-1.0.6-blue.svg)
 ![0DEP](https://img.shields.io/badge/Dependencies-0-yellow.svg)
 
-Safe NodeJS Event Emitter (aim to be compatible with NodeJS Emitter as possible). This package has been created to answer specific need of the SlimIO product and has no purpose of replacing NodeJS Emitter.
+Safe Node.js Event Emitter (aim to be compatible with [Node.js Emitter](https://nodejs.org/api/events.html) as possible). This package has been created to answer specific need of the SlimIO product and has no purpose of replacing Node.js Emitter.
 
 Within the SlimIO Core we need to ensure that all addons are started as expected without any errors (any Error in an EventEmitter will cause a stop at the core level).
 
-If you dont know why you need this, please don't use it !
+If you dont know why you need this, **please don't use it** !
 
-> Note: The SlimIO core force NodeJS DEP0018 (So unhandledPromise will stop the process).
+> Note: The SlimIO core force Node.js DEP0018 (So unhandledPromise will stop the process).
 
 <p align="center">
     <img src="https://i.imgur.com/ogpk93x.png">
@@ -52,7 +52,7 @@ evt.emitAndWait("foo").then(() => {
 
 ## API
 
-All API are compatible with NodeJS EventEmitter except `emitAsync`, `catch`, `once` and `prependOnceListener`.
+All API are compatible with Node.js EventEmitter except `emitAsync`, `catch`, `once` and `prependOnceListener`.
 
 The method **prependOnceListener** is not implemented (it will throw a not Implemented error if you try to call it).
 
