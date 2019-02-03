@@ -16,7 +16,7 @@ If you dont know why you need this, **please don't use it** !
 > Note: The SlimIO core force Node.js DEP0018 (So unhandledPromise will stop the process).
 
 <p align="center">
-    <img src="https://i.imgur.com/ogpk93x.png">
+    <img src="https://i.imgur.com/ogpk93x.png" width="610">
 </p>
 
 ## Getting Started
