@@ -1,11 +1,11 @@
 # SafeEmitter
 
+![![version]](https://img.shields.io/badge/dynamic/json.svg?url=https://raw.githubusercontent.com/SlimIO/safeEmitter/master/package.json&query=$.version&label=Version)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/SlimIO/safeEmitter/commit-activity)
 [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/SlimIO/safeEmitter/blob/master/LICENSE)
 [![Known Vulnerabilities](https://snyk.io/test/github/SlimIO/safeEmitter/badge.svg?targetFile=package.json)](https://snyk.io/test/github/SlimIO/safeEmitter?targetFile=package.json)
-![V1.0.6](https://img.shields.io/badge/version-1.0.6-blue.svg)
 ![0DEP](https://img.shields.io/badge/Dependencies-0-yellow.svg)
-[![CircleCI](https://circleci.com/gh/SlimIO/safeEmitter.svg?style=svg)](https://circleci.com/gh/SlimIO/safeEmitter)
+[![Build Status](https://travis-ci.com/SlimIO/safeEmitter.svg?branch=master)](https://travis-ci.com/SlimIO/safeEmitter)
 
 Safe Node.js Event Emitter (aim to be compatible with [Node.js Emitter](https://nodejs.org/api/events.html) as possible). This package has been created to answer specific need of the SlimIO product and has no purpose of replacing Node.js Emitter.
 
