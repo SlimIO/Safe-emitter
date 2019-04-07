@@ -2,6 +2,9 @@ test/
 tests/
 coverage/
 .nyc_output/
+.circleci/
+.vscode/
+jsdoc/
 docs/
 jsdoc.json
 CONTRIBUTING.md
@@ -10,3 +13,7 @@ CONTRIBUTING.md
 .gitignore
 tsconfig.json
 commitlint.config.js
+.env
+.travis.yml
+tsconfig.json
+CHANGELOG.md
