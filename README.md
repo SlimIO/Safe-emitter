@@ -20,6 +20,9 @@ If you dont know why you need this, **please don't use it** !
     <img src="https://i.imgur.com/ogpk93x.png" width="610">
 </p>
 
+## Requirements
+- Node.js v10 or higher
+
 ## Getting Started
 
 This package is available in the Node Package Repository and can be easily installed with [npm](https://docs.npmjs.com/getting-started/what-is-npm) or [yarn](https://yarnpkg.com).
@@ -148,5 +151,5 @@ async function main() {
 main().catch(console.error);
 ```
 
-## LICENSE
+## License
 MIT
