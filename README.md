@@ -151,5 +151,8 @@ async function main() {
 main().catch(console.error);
 ```
 
+## Dependencies
+This project have no dependencies.
+
 ## License
 MIT
