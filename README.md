@@ -6,7 +6,7 @@
 ![size](https://img.shields.io/bundlephobia/min/@slimio/safe-emitter.svg?style=flat)
 ![DEP](https://img.shields.io/david/SlimIO/safeEmitter.svg)
 [![Known Vulnerabilities](https://snyk.io/test/github/SlimIO/safeEmitter/badge.svg?targetFile=package.json)](https://snyk.io/test/github/SlimIO/safeEmitter?targetFile=package.json)
-[![Build Status](https://travis-ci.com/SlimIO/safeEmitter.svg?branch=master)](https://travis-ci.com/SlimIO/safeEmitter)
+[![Build Status](https://travis-ci.com/SlimIO/safeEmitter.svg?branch=master)](https://travis-ci.com/SlimIO/safeEmitter) [![Greenkeeper badge](https://badges.greenkeeper.io/SlimIO/Safe-emitter.svg)](https://greenkeeper.io/)
 
 Safe Node.js Event Emitter (aim to be compatible with [Node.js Emitter](https://nodejs.org/api/events.html) as possible). This package has been created to answer specific need of the SlimIO product and has no purpose of replacing Node.js Emitter.
 
