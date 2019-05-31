@@ -35,6 +35,7 @@ function isEventName(eventName) {
  *
  * @throws {Error}
  */
+// eslint-disable-next-line
 function addListener(emitter, eventName, listener, start) {
     const evt = events.get(emitter);
     if (evt.has(eventName)) {
@@ -55,7 +56,6 @@ function addListener(emitter, eventName, listener, start) {
  * @class SafeEmitter
  */
 class SafeEmitter {
-
     /**
      * @constructor
      */
@@ -377,7 +377,6 @@ class SafeEmitter {
             }
         }
     }
-
 }
 
 // Static defaultMaxListeners
