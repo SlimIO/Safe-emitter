@@ -9,7 +9,7 @@ const SafeEmitter = require("../");
 avaTest("Enumate SafeEmitter keys", function assert(assert) {
     const evt = new SafeEmitter();
     const keys = Reflect.ownKeys(evt);
-    assert.is(keys.length, 2);
+    assert.is(keys.length, 3);
     for (const key of keys) {
         assert.true(typeof key === "symbol");
     }
