@@ -1,7 +1,10 @@
 // Private Properties
 const events = new WeakMap();
+
+// Symbols
 const maxEventListeners = Symbol("maxEventListeners");
 const errorHandler = Symbol("ErrorHandler");
+const breakpoints = Symbol("BreakPoints");
 
 /**
  * @function isAsyncFunction
@@ -65,7 +68,7 @@ class SafeEmitter {
         /* istanbul ignore next */
         // eslint-disable-next-line
         this[errorHandler] = function errorHandler() {};
-        this.breakpoints = new Set();
+        this[breakpoints] = new Set();
     }
 
     /**
@@ -80,7 +83,7 @@ class SafeEmitter {
             throw new TypeError("eventName should be typeof string or symbol");
         }
 
-        this.breakpoints.add(eventName);
+        this[breakpoints].add(eventName);
     }
 
     /**
@@ -344,8 +347,8 @@ class SafeEmitter {
 
         setImmediate(() => {
             for (const listener of listeners) {
-                if (this.breakpoints.has(eventName)) {
-                    this.breakpoints.delete(eventName);
+                if (this[breakpoints].has(eventName)) {
+                    this[breakpoints].delete(eventName);
                     break;
                 }
 
