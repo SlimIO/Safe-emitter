@@ -1,5 +1,6 @@
 declare class SafeEmitter<T = SafeEmitter.Default> {
     constructor();
+    breakpoints: Set<string>;
 
     // Static Properties
     static defaultMaxListeners: number;
@@ -22,6 +23,7 @@ declare class SafeEmitter<T = SafeEmitter.Default> {
     removeAllListeners<K extends keyof T>(eventName?: K): void;
     emit<K extends keyof T>(eventName: K, data: T[K]): void;
     emitAndWait<K extends keyof T>(eventName: K, data: T[K]): void;
+    stopPropagation<K extends keyof T>(eventName: K): void;
 }
 
 declare namespace SafeEmitter {

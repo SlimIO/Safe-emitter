@@ -65,6 +65,22 @@ class SafeEmitter {
         /* istanbul ignore next */
         // eslint-disable-next-line
         this[errorHandler] = function errorHandler() {};
+        this.breakpoints = new Set();
+    }
+
+    /**
+     * @public
+     * @method stopPropagation
+     * @memberof SafeEmitter#
+     * @param {!(String | Symbol)} eventName event name
+     * @return {void}
+     */
+    stopPropagation(eventName) {
+        if (!isEventName(eventName)) {
+            throw new TypeError("eventName should be typeof string or symbol");
+        }
+
+        this.breakpoints.add(eventName);
     }
 
     /**
@@ -328,6 +344,11 @@ class SafeEmitter {
 
         setImmediate(() => {
             for (const listener of listeners) {
+                if (this.breakpoints.has(eventName)) {
+                    this.breakpoints.delete(eventName);
+                    break;
+                }
+
                 if (isAsyncFunction(listener)) {
                     listener(...data).catch((error) => {
                         this[errorHandler](error, eventName, listener);
