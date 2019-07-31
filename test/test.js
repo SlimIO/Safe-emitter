@@ -1,3 +1,5 @@
+"use strict";
+
 /* eslint no-empty-function: 0 */
 
 // Require Third-Party Dependencies
@@ -209,7 +211,12 @@ avaTest("off() listener should be typeof function", function assert(assert) {
 
 avaTest("off() remove a listener", function assert(assert) {
     const evt = new SafeEmitter();
-    function listener() {}
+    /**
+     * @function listener
+     */
+    function listener() {
+        // do thing
+    }
     evt.on("foo", listener);
 
     assert.false(evt.off("bar", () => {}));

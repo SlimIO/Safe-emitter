@@ -1,3 +1,5 @@
+"use strict";
+
 // Private Properties
 const events = new WeakMap();
 
@@ -9,7 +11,7 @@ const breakpoints = Symbol("BreakPoints");
 /**
  * @function isAsyncFunction
  * @param {any} value JavaScript Object value
- * @returns {Boolean}
+ * @returns {boolean}
  */
 function isAsyncFunction(value) {
     return Object.prototype.toString.call(value).slice(8, -1) === "AsyncFunction";
@@ -17,9 +19,9 @@ function isAsyncFunction(value) {
 
 /**
  * @function isEventName
- * @desc Known if a given eventName is a string or symbol primitive!
- * @param {String | Symbol} eventName eventName
- * @returns {Boolean}
+ * @description Known if a given eventName is a string or symbol primitive!
+ * @param {string | symbol} eventName eventName
+ * @returns {boolean}
  */
 function isEventName(eventName) {
     const evtType = typeof eventName;
@@ -29,11 +31,11 @@ function isEventName(eventName) {
 
 /**
  * @function addListener
- * @desc Shortcut method to add a new Listener to a given eventName
+ * @description Shortcut method to add a new Listener to a given eventName
  * @param {!SafeEmitter} emitter Emitter instance
- * @param {!String} eventName eventName
+ * @param {!string} eventName eventName
  * @param {any} listener event listener (handler)
- * @param {!Boolean} start push at the start or the end
+ * @param {!boolean} start push at the start or the end
  * @returns {void}
  *
  * @throws {Error}
@@ -60,7 +62,7 @@ function addListener(emitter, eventName, listener, start) {
  */
 class SafeEmitter {
     /**
-     * @constructor
+     * @class
      */
     constructor() {
         events.set(this, new Map());
@@ -73,10 +75,10 @@ class SafeEmitter {
 
     /**
      * @public
-     * @method stopPropagation
+     * @function stopPropagation
      * @memberof SafeEmitter#
-     * @param {!(String | Symbol)} eventName event name
-     * @return {void}
+     * @param {!(string | symbol)} eventName event name
+     * @returns {void}
      */
     stopPropagation(eventName) {
         if (!isEventName(eventName)) {
@@ -88,10 +90,10 @@ class SafeEmitter {
 
     /**
      * @public
-     * @method catch
+     * @function catch
      * @memberof SafeEmitter#
      * @param {!Function} errorListener EventEmitter errorListener
-     * @return {this}
+     * @returns {this}
      */
     catch(errorListener) {
         if (typeof errorListener !== "function") {
@@ -105,10 +107,10 @@ class SafeEmitter {
 
     /**
      * @public
-     * @method eventNames
-     * @desc Returns an array listing the events for which the emitter has registered listeners.
+     * @function eventNames
+     * @description Returns an array listing the events for which the emitter has registered listeners.
      * @memberof SafeEmitter#
-     * @return {(String|Symbol)[]}  The values in the array will be strings or Symbols.
+     * @returns {(string|symbol)[]}  The values in the array will be strings or Symbols.
      */
     eventNames() {
         return [...events.get(this).keys()];
@@ -116,11 +118,11 @@ class SafeEmitter {
 
     /**
      * @public
-     * @method listenerCount
-     * @desc Returns the number of listeners listening to the event named eventName.
+     * @function listenerCount
+     * @description Returns the number of listeners listening to the event named eventName.
      * @memberof SafeEmitter#
-     * @param {!String} eventName event name
-     * @return {Number}
+     * @param {!string} eventName event name
+     * @returns {number}
      */
     listenerCount(eventName) {
         const evt = events.get(this);
@@ -130,11 +132,11 @@ class SafeEmitter {
 
     /**
      * @public
-     * @method listeners
+     * @function listeners
      * @memberof SafeEmitter#
-     * @desc Returns a copy of the array of listeners for the event named eventName.
-     * @param {!String} eventName event name
-     * @return {Array<any>}
+     * @description Returns a copy of the array of listeners for the event named eventName.
+     * @param {!string} eventName event name
+     * @returns {Array<any>}
      */
     listeners(eventName) {
         const evt = events.get(this);
@@ -149,8 +151,8 @@ class SafeEmitter {
      * @public
      * @function getMaxListeners
      * @memberof SafeEmitter#
-     * @desc Maximum number of listeners that can be added to one event!
-     * @return {Number}
+     * @description Maximum number of listeners that can be added to one event!
+     * @returns {number}
      */
     getMaxListeners() {
         return this[maxEventListeners];
@@ -160,9 +162,9 @@ class SafeEmitter {
      * @public
      * @function setMaxListeners
      * @memberof SafeEmitter#
-     * @param {!Number} max new maximum of listeners for the given event
-     * @desc Maximum number of listeners that can be added to one event!
-     * @return {void}
+     * @param {!number} max new maximum of listeners for the given event
+     * @description Maximum number of listeners that can be added to one event!
+     * @returns {void}
      *
      * @throws {TypeError}
      */
@@ -176,11 +178,11 @@ class SafeEmitter {
 
     /**
      * @public
-     * @method on
+     * @function on
      * @memberof SafeEmitter#
-     * @param {!String} eventName event name
+     * @param {!string} eventName event name
      * @param {!SafeEmitter.Listener} listener event handler!
-     * @return {void}
+     * @returns {void}
      *
      * @throws {TypeError}
      */
@@ -197,11 +199,11 @@ class SafeEmitter {
 
     /**
      * @public
-     * @method prependListener
+     * @function prependListener
      * @memberof SafeEmitter#
-     * @param {!String} eventName event name
+     * @param {!string} eventName event name
      * @param {!SafeEmitter.Listener} listener event handler!
-     * @return {void}
+     * @returns {void}
      *
      * @throws {TypeError}
      */
@@ -218,12 +220,12 @@ class SafeEmitter {
 
     /**
      * @public
-     * @method once
-     * @desc Adds a one-time listener function for the event named eventName.
+     * @function once
+     * @description Adds a one-time listener function for the event named eventName.
      * @memberof SafeEmitter#
-     * @param {!String} eventName event name
-     * @param {Number=} timeOut event Timeout
-     * @return {void}
+     * @param {!string} eventName event name
+     * @param {number} [timeOut] event Timeout
+     * @returns {void}
      *
      * @throws {TypeError}
      */
@@ -257,10 +259,10 @@ class SafeEmitter {
 
     /**
      * @public
-     * @method prependOnceListener
-     * @desc Not Implemented
+     * @function prependOnceListener
+     * @description Not Implemented
      * @memberof SafeEmitter#
-     * @return {void}
+     * @returns {void}
      *
      * @throws {TypeError}
      */
@@ -271,11 +273,11 @@ class SafeEmitter {
 
     /**
      * @public
-     * @method off
+     * @function off
      * @memberof SafeEmitter#
-     * @param {!String} eventName event name
+     * @param {!string} eventName event name
      * @param {any} listener event handler!
-     * @return {Boolean}
+     * @returns {boolean}
      *
      * @throws {TypeError}
      */
@@ -306,11 +308,11 @@ class SafeEmitter {
 
     /**
      * @public
-     * @method removeAllListeners
-     * @desc Removes all listeners, or those of the specified eventName.
+     * @function removeAllListeners
+     * @description Removes all listeners, or those of the specified eventName.
      * @memberof SafeEmitter#
-     * @param {String=} eventName event name
-     * @return {void}
+     * @param {string} [eventName] event name
+     * @returns {void}
      *
      * @throws {TypeError}
      */
@@ -329,12 +331,12 @@ class SafeEmitter {
 
     /**
      * @public
-     * @method emit
-     * @desc Emit a Normal Synchronous event
+     * @function emit
+     * @description Emit a Normal Synchronous event
      * @memberof SafeEmitter#
-     * @param {!String} eventName event name
+     * @param {!string} eventName event name
      * @param {any} data Handler data...
-     * @return {void}
+     * @returns {void}
      */
     emit(eventName, ...data) {
         const evt = events.get(this);
@@ -372,12 +374,12 @@ class SafeEmitter {
     /**
      * @async
      * @public
-     * @method emitAndWait
-     * @desc Emit an event and wait for all listeners to be completed!
+     * @function emitAndWait
+     * @description Emit an event and wait for all listeners to be completed!
      * @memberof SafeEmitter#
-     * @param {!String} eventName event name
+     * @param {!string} eventName event name
      * @param {any} data Handler data...
-     * @return {void}
+     * @returns {void}
      */
     async emitAndWait(eventName, ...data) {
         const evt = events.get(this);
