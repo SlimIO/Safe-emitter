@@ -21,7 +21,7 @@ If you dont know why you need this, **please don't use it** !
 </p>
 
 ## Requirements
-- Node.js v10 or higher
+- [Node.js](https://nodejs.org/en/) v10 or higher
 
 ## Getting Started
 
