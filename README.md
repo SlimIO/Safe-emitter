@@ -2,11 +2,12 @@
 
 ![![version]](https://img.shields.io/badge/dynamic/json.svg?url=https://raw.githubusercontent.com/SlimIO/safeEmitter/master/package.json&query=$.version&label=Version)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/SlimIO/safeEmitter/commit-activity)
-[![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/SlimIO/safeEmitter/blob/master/LICENSE)
+[![mit](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/SlimIO/safeEmitter/blob/master/LICENSE)
 ![size](https://img.shields.io/bundlephobia/min/@slimio/safe-emitter.svg?style=flat)
 ![DEP](https://img.shields.io/david/SlimIO/safeEmitter.svg)
 [![Known Vulnerabilities](https://snyk.io/test/github/SlimIO/safeEmitter/badge.svg?targetFile=package.json)](https://snyk.io/test/github/SlimIO/safeEmitter?targetFile=package.json)
-[![Build Status](https://travis-ci.com/SlimIO/safeEmitter.svg?branch=master)](https://travis-ci.com/SlimIO/safeEmitter) [![Greenkeeper badge](https://badges.greenkeeper.io/SlimIO/Safe-emitter.svg)](https://greenkeeper.io/)
+[![Build Status](https://travis-ci.com/SlimIO/safeEmitter.svg?branch=master)](https://travis-ci.com/SlimIO/safeEmitter)
+[![Greenkeeper badge](https://badges.greenkeeper.io/SlimIO/Safe-emitter.svg)](https://greenkeeper.io/)
 
 Safe Node.js Event Emitter (aim to be compatible with [Node.js Emitter](https://nodejs.org/api/events.html) as possible). This package has been created to answer specific need of the SlimIO product and has no purpose of replacing Node.js Emitter.
 
@@ -21,7 +22,7 @@ If you dont know why you need this, **please don't use it** !
 </p>
 
 ## Requirements
-- [Node.js](https://nodejs.org/en/) v10 or higher
+- [Node.js](https://nodejs.org/en/) v12 or higher
 
 ## Getting Started
 

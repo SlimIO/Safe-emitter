@@ -11,7 +11,7 @@
     "report": "nyc report --reporter=html"
   },
   "engines": {
-    "node": ">=10"
+    "node": ">=12"
   },
   "husky": {
     "hooks": {
