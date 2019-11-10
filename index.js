@@ -357,6 +357,7 @@ class SafeEmitter {
                 if (isAsyncFunction(listener)) {
                     listener(...data).catch((error) => {
                         this[errorHandler](error, eventName, listener);
+                        this.emit("error", error);
                     });
                     continue;
                 }
@@ -366,6 +367,7 @@ class SafeEmitter {
                 }
                 catch (error) {
                     this[errorHandler](error, eventName, listener);
+                    this.emit("error", error);
                 }
             }
         });
@@ -399,6 +401,7 @@ class SafeEmitter {
                 listener(...data);
             }
             catch (error) {
+                this.emit("error", error);
                 this[errorHandler](error, eventName, listener);
             }
         }
