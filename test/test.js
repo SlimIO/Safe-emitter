@@ -187,7 +187,7 @@ avaTest("once() Handle event before timeOut", async function assert(assert) {
 avaTest("prependOnceListener() should throw not implemented error", function assert(assert) {
     const evt = new SafeEmitter();
 
-    const { message } = assert.throws(() => evt.prependOnceListener(), Error);
+    const { message } = assert.throws(() => evt.prependOnceListener(), { instanceOf: Error });
     assert.is(message, "SafeEmitter doesn't implement the method prependOnceListener");
 });
 
