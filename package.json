@@ -8,7 +8,9 @@
     "test": "cross-env psp && ava --verbose",
     "doc": "jsdoc -c ./jsdoc.json -r -R ./README.md -P ./package.json --verbose",
     "coverage": "nyc npm test",
-    "report": "nyc report --reporter=html"
+    "report": "nyc report --reporter=html",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "engines": {
     "node": ">=12"
@@ -60,5 +62,8 @@
     "nyc": "^15.0.0",
     "pkg-ok": "^2.3.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "snyk": "^1.316.1"
+  },
+  "snyk": true
 }
